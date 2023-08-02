@@ -1,0 +1,22 @@
+{
+    "name": "loncat/moody",
+    "description": "moody the moodle integration",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Loncat\\Moody\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kassle",
+            "email": "kassle@krybrig.org"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "10"
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit tests/"
+    }
+}
