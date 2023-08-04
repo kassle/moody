@@ -5,13 +5,10 @@ namespace Loncat\Moody;
 use MoodleRest;
 
 class AppImpl implements App {
-    private Config $config;
     private MoodleRest $rest;
 
-    function __construct(Config $config) {
-        $this->config = $config;
-        $this->rest = new MoodleRest($config->getMoodleBaseUrl(), $config->getMoodleToken(), MoodleRest::RETURN_ARRAY);
-        // $this->rest->setDebug(true);
+    function __construct(MoodleRest $rest) {
+        $this->rest = $rest;
     }
 
     public function getUserById(string $id): array {

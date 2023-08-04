@@ -3,10 +3,12 @@
 namespace Loncat\Moody;
 
 use Loncat\Moody\Config;
+use MoodleRest;
 
 class AppFactory {
     private function __construct() { }
     public static function create(Config $config) : App {
-        return new AppImpl($config);
+        $rest = new MoodleRest($config->getMoodleBaseUrl(), $config->getMoodleToken(), MoodleRest::RETURN_ARRAY);
+        return new AppImpl($rest);
     }
 }
