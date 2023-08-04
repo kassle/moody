@@ -4,8 +4,47 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7196be6831a159d1e3b11111c48cfd4c",
-    "packages": [],
+    "content-hash": "2bac92d9ab97befad7ec1d03ff927f56",
+    "packages": [
+        {
+            "name": "llagerlof/moodlerest",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/llagerlof/MoodleRest.git",
+                "reference": "3fb24a0dd494d8dbbac70999b26627ce4ee63ac4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/llagerlof/MoodleRest/zipball/3fb24a0dd494d8dbbac70999b26627ce4ee63ac4",
+                "reference": "3fb24a0dd494d8dbbac70999b26627ce4ee63ac4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "MoodleRest.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lawrence Lagerlof",
+                    "email": "llagerlof@gmail.com"
+                }
+            ],
+            "description": "MoodleRest is a PHP class to query Moodle REST webservices",
+            "homepage": "https://github.com/llagerlof",
+            "support": {
+                "issues": "https://github.com/llagerlof/MoodleRest/issues",
+                "source": "https://github.com/llagerlof/MoodleRest/tree/v2.4.0"
+            },
+            "time": "2021-04-14T14:47:33+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "myclabs/deep-copy",

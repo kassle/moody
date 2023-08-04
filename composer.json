@@ -18,5 +18,8 @@
     },
     "scripts": {
         "tests": "vendor/bin/phpunit tests/"
+    },
+    "require": {
+        "llagerlof/moodlerest": "^2.4"
     }
 }

@@ -3,5 +3,7 @@
 namespace Loncat\Moody;
 
 interface App {
-    public function getAllUsers() : array;
+    public function getUserById(string $id) : array;
+    public function getUserByUsername(string $username) : array;
+    public function getUserByEmail(string $email) : array;
 }

@@ -2,6 +2,20 @@
 
 namespace Loncat\Moody;
 
-interface Config {
-    public function getMoodleBaseUrl() : string;
+class Config {
+    private $moodleBaseUrl;
+    private $moodleToken;
+
+    public function __construct(string $moodleBaseUrl, string $moodleToken) {
+        $this->moodleBaseUrl = $moodleBaseUrl;
+        $this->moodleToken = $moodleToken;
+    }
+
+    public function getMoodleBaseUrl() : string {
+        return $this->moodleBaseUrl;
+    }
+
+    public function getMoodleToken() : string {
+        return $this->moodleToken;
+    }
 }
