@@ -9,7 +9,7 @@ composer install
 composer tests
 
 ## Install
-### Add repository
+### Add repository in composer.json
 ```
 "repositories": [
     {
@@ -19,7 +19,7 @@ composer tests
 ],
 ```
 ### Install moody
-composer require loncat/moody
+composer require loncat/moody:dev-main
 
 ## Example
 ```php
