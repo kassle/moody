@@ -27,11 +27,6 @@ composer require loncat/moody:dev-main
 
 require_once 'vendor/autoload.php';
 
-require_once 'Config.php';
-require_once 'App.php';
-require_once 'AppImpl.php';
-require_once 'AppFactory.php';
-
 use Loncat\Moody\AppFactory;
 use Loncat\Moody\Config;
 
