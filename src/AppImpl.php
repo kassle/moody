@@ -3,6 +3,7 @@
 namespace Loncat\Moody;
 
 use MoodleRest;
+use Throwable;
 
 class AppImpl implements App {
     private MoodleRest $rest;
@@ -24,12 +25,46 @@ class AppImpl implements App {
     }
 
     private function getUserByField(string $field, string $value) : array {
-        $result = $this->rest->request("core_user_get_users_by_field", array("field" => $field, "values" => array($value)));
+        try {
+            $result = $this->rest->request("core_user_get_users_by_field", array("field" => $field, "values" => array($value)));
 
-        if (is_array($result)) {
-            return $result;
-        } else {
-            return array();
+            if (is_array($result) && sizeof($result) > 0) {
+                if (array_key_exists("errorcode", $result)) {
+                    return array(
+                        "data" => [],
+                        "error" => [
+                            "code" => 500,
+                            "message" => $result["message"]
+                        ]                        
+                        );
+                } else {
+                    $data = $result[0];
+                    return array("data" => [
+                        "userid" => $data["id"],
+                        "username" => $data["username"],
+                        "email" => $data["email"],
+                        "firstname" => $data["firstname"],
+                        "lastname" => $data["lastname"],
+                        "city" => $data["city"],
+                        "country" => $data["country"]
+                    ], "error" => []);
+                }
+            } else {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => "404",
+                        "message" => "Not Found"
+                    ]
+                );
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => "400",
+                    "message" => $error->getMessage()
+                ]);
         }
     }
 

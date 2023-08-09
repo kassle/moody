@@ -37,3 +37,26 @@ $result = $app->getUserByEmail("example@email.com");
 
 var_dump($result);
 ```
+
+## API
+### GET USER BY USERID/USERNAME/EMAIL
+Params: String of userId or username or email address
+Result: array with following key
+- data is empty if user not found
+- error is not empty when there is an error
+
+```
+"data" => [
+        "userid" => userid,
+        "username" => username,
+        "email" => email,
+        "firstname" => firstname,
+        "lastname" => lastname,
+        "city" => city,
+        "country" => country
+    ],
+"error" => [
+        "code" => error-code
+        "message" => error message
+    ]
+```
