@@ -33,10 +33,42 @@ class AppImpl implements App {
         }
     }
 
-    // public function updateUser(string $id, string $city) : mixed {
-    //     $result = $this->rest->request("core_user_update_users", array("id" => $id, "city" => $city, MoodleRest::METHOD_POST));
-    //     return $result;
-    // }
+    public function updateUser(string $id, string $password, string $email, string $firstname, string $lastname, string $city) : mixed {
+        $changes = array();
+        
+        if ($this->isStringValid($password)) {
+            $changes["password"] = $password;
+        }
+
+        if ($this->isStringValid($email)) {
+            $changes["email"] = $email;
+        }
+
+        if ($this->isStringValid($firstname)) {
+            $changes["firstname"] = $firstname;
+        }
+
+        if ($this->isStringValid($lastname)) {
+            $changes["lastname"] = $lastname;
+        }
+
+        if ($this->isStringValid($city)) {
+            $changes["city"] = $city;
+        }
+
+        if (sizeof($changes) > 0) {
+            $changes["id"] = $id;
+            $result = $this->rest->request("core_user_update_users", array("users" => array($changes)), MoodleRest::METHOD_POST);
+        } else {
+            $result = array();
+        }
+        
+        return $result;
+    }
+
+    private function isStringValid(string $str) {
+        return (strlen(trim($str)) > 0);
+    }
 
     public function getEnroledUsersByCourseId(string $courseId) : array {
         $result = $this->rest->request("core_enrol_get_enrolled_users", array("courseid" => $courseId));
