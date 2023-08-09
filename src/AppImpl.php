@@ -80,8 +80,22 @@ class AppImpl implements App {
         }
     }
 
-    // public function enrolUserToCourse(string $courseId, string $userId) : mixed {
-    //     $result = $this->rest->request("core_enrol_submit_user_enrolment_form", array("courseid" => $courseId, "userId" => $userId), MoodleRest::METHOD_POST);
-    //     return $result;
-    // }
+    public function enrolUserToCourse(string $courseId, string $userId, string $roleId) : mixed {
+        $result = $this->rest->request("enrol_manual_enrol_users",
+            array("enrolments" => array(array(
+                "courseid" => $courseId,
+                "userid" => $userId,
+                "roleid" => $roleId
+            ))), MoodleRest::METHOD_POST);
+        return $result;
+    }
+
+    public function unEnrolUserFromCourse(string $courseId, string $userId) : mixed {
+        $result = $this->rest->request("enrol_manual_unenrol_users",
+            array("enrolments" => array(array(
+                "courseid" => $courseId,
+                "userid" => $userId
+            ))), MoodleRest::METHOD_POST);
+        return $result;
+    }
 }
