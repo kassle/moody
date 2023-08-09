@@ -189,22 +189,70 @@ class AppImpl implements App {
         }
     }
 
-    public function enrolUserToCourse(string $courseId, string $userId, string $roleId) : mixed {
-        $result = $this->rest->request("enrol_manual_enrol_users",
-            array("enrolments" => array(array(
-                "courseid" => $courseId,
-                "userid" => $userId,
-                "roleid" => $roleId
-            ))), MoodleRest::METHOD_POST);
-        return $result;
+    public function enrolUserToCourse(string $courseId, string $userId, string $roleId = Contract::ROLE_ID_STUDENT) : array {
+        try {
+            $result = $this->rest->request("enrol_manual_enrol_users",
+                array("enrolments" => array(array(
+                    "courseid" => $courseId,
+                    "userid" => $userId,
+                    "roleid" => $roleId
+                ))), MoodleRest::METHOD_POST);
+
+            if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 500,
+                        "message" => $result["message"]
+                    ]);
+            } else {
+                return array(
+                    "data" => [
+                        "code" => 200,
+                        "message" => "enrol success"
+                    ],
+                    "error" => []);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
     }
 
-    public function unEnrolUserFromCourse(string $courseId, string $userId) : mixed {
-        $result = $this->rest->request("enrol_manual_unenrol_users",
-            array("enrolments" => array(array(
-                "courseid" => $courseId,
-                "userid" => $userId
-            ))), MoodleRest::METHOD_POST);
-        return $result;
+    public function unEnrolUserFromCourse(string $courseId, string $userId) : array {
+        try {
+            $result = $this->rest->request("enrol_manual_unenrol_users",
+                array("enrolments" => array(array(
+                    "courseid" => $courseId,
+                    "userid" => $userId
+                ))), MoodleRest::METHOD_POST);
+
+            if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 500,
+                        "message" => $result["message"]
+                    ]);
+            } else {
+                return array(
+                    "data" => [
+                        "code" => 200,
+                        "message" => "unenrol success"
+                    ],
+                    "error" => []);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
     }
 }

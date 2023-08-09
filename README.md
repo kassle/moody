@@ -61,6 +61,12 @@ Result: array with following key
     ]
 ```
 
+```php
+$result = $app->getUserById("1234");
+$result = $app->getUserByUsername("batman");
+$result = $app->getUserByEmail("batman@gotham.com");
+```
+
 ### UPDATE USER DATA
 Params:
 - userid (required),
@@ -71,7 +77,7 @@ Params:
 - city (put "" if no change)
 - country (put "" if no change)
 Result: array with following key
-- data is empty if update success
+- data is not empty if update success
 - error is not empty when there is an error
 
 ```
@@ -85,10 +91,14 @@ Result: array with following key
     ]
 ```
 
+```php
+$result = $app->updateUser("1234", "", "", "", "", "gotham-city", "dc");
+```
+
 ### GET COURSE'S ENROLLED USERS
 Param: courseid
 Result: array with following key
-- data is empty if user not found
+- data is empty if course not found
 - error is not empty when there is an error
 
 ```
@@ -111,4 +121,55 @@ Result: array with following key
         "code" => error-code (int)
         "message" => error message (str)
     ]
+```
+
+```php
+$result = $app->getEnroledUsersByCourseId("1234");
+```
+
+### ENROL USER TO COURSE
+Param:
+- courseid (required),
+- userid (required),
+- roleid (required, default = student(11)), see const value in Contract class
+Result: array with following key
+- data is not empty if enrol success
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+```php
+$result = $app->enrolUserToCourse("111", "1234", Contract::ROLE_ID_STUDENT);
+```
+
+### UNENROL USER FROM COURSE
+Param:
+- courseid (required),
+- userid (required)
+Result: array with following key
+- data is not empty if unenrol success
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+```php
+$result = $app->unEnrolUserFromCourse("111", "1234");
 ```
