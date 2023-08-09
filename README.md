@@ -38,6 +38,18 @@ $result = $app->getUserByEmail("example@email.com");
 var_dump($result);
 ```
 
+## REQUIREMENT
+### MOODLE ACCESS TOKEN AND FUNCTION
+Need to create token in Moodle Site Administration and the following function:
+- core_course_create_courses
+- core_course_delete_courses
+- core_course_update_courses
+- core_enrol_get_enrolled_users
+- core_user_get_users_by_field
+- core_user_update_users
+- enrol_manual_enrol_users
+- enrol_manual_unenrol_users
+
 ## API
 ### GET USER BY USERID/USERNAME/EMAIL
 Params: String of userId or username or email address
