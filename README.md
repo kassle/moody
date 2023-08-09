@@ -53,6 +53,7 @@ Need to create token in Moodle Site Administration and the following function:
 ## API
 ### GET USER BY USERID/USERNAME/EMAIL
 Params: String of userId or username or email address
+
 Result: array with following key
 - data is empty if user not found
 - error is not empty when there is an error
@@ -88,6 +89,7 @@ Params:
 - lastname (put "" if no change)
 - city (put "" if no change)
 - country (put "" if no change)
+
 Result: array with following key
 - data is not empty if update success
 - error is not empty when there is an error
@@ -192,6 +194,7 @@ $result = $app->deleteCourse("111");
 
 ### GET COURSE'S ENROLLED USERS
 Param: courseid
+
 Result: array with following key
 - data is empty if course not found
 - error is not empty when there is an error
@@ -229,6 +232,7 @@ Param:
 - courseid (required),
 - userid (required),
 - roleid (required, default = student(11)), see const value in Contract class
+
 Result: array with following key
 - data is not empty if enrol success
 - error is not empty when there is an error
@@ -252,6 +256,7 @@ $result = $app->enrolUserToCourse("111", "1234", Contract::ROLE_ID_STUDENT);
 Param:
 - courseid (required),
 - userid (required)
+
 Result: array with following key
 - data is not empty if unenrol success
 - error is not empty when there is an error
