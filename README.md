@@ -95,6 +95,89 @@ Result: array with following key
 $result = $app->updateUser("1234", "", "", "", "", "gotham-city", "dc");
 ```
 
+### CREATE COURSE
+Param:
+- courseid (required)
+- shortname (put "" if no change)
+- fullname (put "" if no change)
+- categoryId (put -1 if no change)
+- summary (put "" if no change)
+- startDate (put `new DateTime(date(DATE_RFC2822, 0))` if no change)
+- endDate (put `new DateTime(date(DATE_RFC2822, 0))` if no change)
+
+Result: array with following key
+- data is not empty if create success include the created **courseid**
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "courseid" => course-id (str),
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+```php
+$result = $app->createCourse(
+    "Orizuru",
+    "Origami Crane or Paper Crane",
+    13,
+    "Folding paper to shape a crane",
+    new DateTime(),
+    new DateTime("2024-08-17 23:59:59"));
+```
+
+### UPDATE COURSE
+Param:
+- shortname
+- fullname
+- categoryId
+- summary
+- startDate
+- endDate
+
+Result: array with following key
+- data is not empty if create success include the created **courseid**
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "courseid" => course-id (str),
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+### DELETE COURSE
+Param: courseid
+
+Result: array with following key
+- data is not empty if delete success
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+```php
+$result = $app->deleteCourse("111");
+```
+
 ### GET COURSE'S ENROLLED USERS
 Param: courseid
 Result: array with following key
@@ -126,6 +209,8 @@ Result: array with following key
 ```php
 $result = $app->getEnroledUsersByCourseId("1234");
 ```
+
+Notes: Course with no enrolled users will return error not found (code: 404)
 
 ### ENROL USER TO COURSE
 Param:

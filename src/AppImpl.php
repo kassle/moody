@@ -2,6 +2,7 @@
 
 namespace Loncat\Moody;
 
+use DateTime;
 use MoodleRest;
 use Throwable;
 
@@ -137,6 +138,144 @@ class AppImpl implements App {
 
     private function isStringValid(string $str) {
         return (strlen(trim($str)) > 0);
+    }
+
+    public function createCourse(string $shortname, string $fullname, int $categoryId, string $summary, DateTime $startDate, DateTime $endDate) : array {
+        try {
+            $result = $this->rest->request("core_course_create_courses",
+                array("courses" => array(array(
+                    "shortname" => $shortname,
+                    "fullname" => $fullname,
+                    "categoryid" => $categoryId,
+                    "summary" => $summary,
+                    "startdate" => $startDate->getTimestamp(),
+                    "enddate" => $endDate->getTimestamp()
+
+                ))), MoodleRest::METHOD_POST);
+
+            if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 500,
+                        "message" => $result["message"]
+                    ]);
+            } else {
+                return array(
+                    "data" => [
+                        "code" => 200,
+                        "courseid" => strval($result[0]["id"]),
+                        "message" => "create success"
+                    ],
+                    "error" => []);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
+    }
+
+    public function updateCourse(string $courseId, string $shortname, string $fullname, int $categoryId, string $summary, DateTime $startDate, DateTime $endDate) : array {
+        $changes = array();
+        
+        if ($this->isStringValid($shortname)) {
+            $changes["shortname"] = $shortname;
+        }
+
+        if ($this->isStringValid($fullname)) {
+            $changes["fullname"] = $fullname;
+        }
+
+        if ($categoryId >= 0) {
+            $changes["categoryid"] = $categoryId;
+        }
+
+        if ($this->isStringValid($summary)) {
+            $changes["summary"] = $summary;
+        }
+
+        if ($startDate->getTimestamp() > 0) {
+            $changes["startdate"] = $startDate;
+        }
+
+        if ($endDate->getTimestamp() > 0) {
+            $changes["enddate"] = $endDate;
+        }
+
+        try {
+            if (sizeof($changes) > 0) {
+                $changes["id"] = $courseId;
+                $result = $this->rest->request(
+                    "core_course_update_courses",
+                    array("courses" => array($changes)),
+                    MoodleRest::METHOD_POST);
+
+                if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                    return array(
+                        "data" => [],
+                        "error" => [
+                            "code" => 500,
+                            "message" => $result["message"]
+                        ]);
+                } else {
+                    return array(
+                        "data" => [
+                            "code" => 200,
+                            "message" => "update course success"
+                        ],
+                        "error" => []);
+                }
+            } else {
+                return array(
+                    "data" => [ ],
+                    "error" => [
+                        "code" => 400,
+                        "message" => "no field is changed, check params"
+                    ]);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
+    }
+
+    public function deleteCourse(string $courseId) : array {
+        try {
+            $result = $this->rest->request("core_course_delete_courses",
+                array("courseids" => array($courseId)),
+                MoodleRest::METHOD_POST);
+            
+            if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 500,
+                        "message" => $result["message"]
+                    ]);
+            } else {
+                return array(
+                    "data" => [
+                        "code" => 200,
+                        "message" => "delete success"
+                    ],
+                    "error" => []);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
     }
 
     public function getEnroledUsersByCourseId(string $courseId) : array {
