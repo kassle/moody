@@ -84,3 +84,31 @@ Result: array with following key
         "message" => error message (str)
     ]
 ```
+
+### GET COURSE'S ENROLLED USERS
+Param: courseid
+Result: array with following key
+- data is empty if user not found
+- error is not empty when there is an error
+
+```
+"data" => [
+        [
+            "userid" => userid (str),
+            "username" => username (str),
+            "email" => email (str),
+            "roleid" => roleid (int)
+        ],
+        [
+            "userid" => userid (str),
+            "username" => username (str),
+            "email" => email (str),
+            "roleid" => roleid (int)
+        ],
+        ...
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```

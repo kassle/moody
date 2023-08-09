@@ -39,7 +39,7 @@ class AppImpl implements App {
                 } else {
                     $data = $result[0];
                     return array("data" => [
-                        "userid" => $data["id"],
+                        "userid" => strval($data["id"]),
                         "username" => $data["username"],
                         "email" => $data["email"],
                         "firstname" => $data["firstname"],
@@ -140,7 +140,47 @@ class AppImpl implements App {
     }
 
     public function getEnroledUsersByCourseId(string $courseId) : array {
-        $result = $this->rest->request("core_enrol_get_enrolled_users", array("courseid" => $courseId));
+        try {
+            $result = $this->rest->request("core_enrol_get_enrolled_users", array("courseid" => $courseId));
+            if (is_array($result) && sizeof($result) > 0) {
+                if (array_key_exists("errorcode", $result)) {
+                    return array(
+                        "data" => [],
+                        "error" => [
+                            "code" => 500,
+                            "message" => $result["message"]
+                        ]);
+                } else {
+                    $output = array();
+                    $index = 0;
+                    foreach ($result as $data) {
+                        $output[$index] = array(
+                            "userid" => strval($data["id"]),
+                            "username" => $data["username"],
+                            "email" => $data["email"],
+                            "roleid" => $data["roles"][0]["roleid"]);
+                        $index++;
+                    }
+                    return $output;
+                }
+            } else {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 404,
+                        "message" => "Not Found"
+                    ]
+                );
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
+        
 
         if (is_array($result)) {
             return $result;
