@@ -35,8 +35,7 @@ class AppImpl implements App {
                         "error" => [
                             "code" => 500,
                             "message" => $result["message"]
-                        ]                        
-                        );
+                        ]);
                 } else {
                     $data = $result[0];
                     return array("data" => [
@@ -53,7 +52,7 @@ class AppImpl implements App {
                 return array(
                     "data" => [],
                     "error" => [
-                        "code" => "404",
+                        "code" => 404,
                         "message" => "Not Found"
                     ]
                 );
@@ -62,13 +61,13 @@ class AppImpl implements App {
             return array(
                 "data" => [],
                 "error" => [
-                    "code" => "400",
+                    "code" => 400,
                     "message" => $error->getMessage()
                 ]);
         }
     }
 
-    public function updateUser(string $id, string $password, string $email, string $firstname, string $lastname, string $city) : mixed {
+    public function updateUser(string $id, string $password, string $email, string $firstname, string $lastname, string $city, string $country) : array {
         $changes = array();
         
         if ($this->isStringValid($password)) {
@@ -91,14 +90,49 @@ class AppImpl implements App {
             $changes["city"] = $city;
         }
 
-        if (sizeof($changes) > 0) {
-            $changes["id"] = $id;
-            $result = $this->rest->request("core_user_update_users", array("users" => array($changes)), MoodleRest::METHOD_POST);
-        } else {
-            $result = array();
+        if ($this->isStringValid($country)) {
+            $changes["country"] = $country;
         }
-        
-        return $result;
+
+        try {
+            if (sizeof($changes) > 0) {
+                $changes["id"] = $id;
+                $result = $this->rest->request(
+                    "core_user_update_users",
+                    array("users" => array($changes)),
+                    MoodleRest::METHOD_POST);
+                
+                if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                    return array(
+                        "data" => [],
+                        "error" => [
+                            "code" => 500,
+                            "message" => $result["message"]
+                        ]);
+                } else {
+                    return array(
+                        "data" => [
+                            "code" => 200,
+                            "message" => "update user success"
+                        ],
+                        "error" => []);
+                }
+            } else {
+                return array(
+                    "data" => [ ],
+                    "error" => [
+                        "code" => 400,
+                        "message" => "no field is changed, check params"
+                    ]);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
     }
 
     private function isStringValid(string $str) {

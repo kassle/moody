@@ -47,16 +47,40 @@ Result: array with following key
 
 ```
 "data" => [
-        "userid" => userid,
-        "username" => username,
-        "email" => email,
-        "firstname" => firstname,
-        "lastname" => lastname,
-        "city" => city,
-        "country" => country
+        "userid" => userid (str),
+        "username" => username (str),
+        "email" => email (str),
+        "firstname" => firstname (str),
+        "lastname" => lastname (str),
+        "city" => city (str),
+        "country" => country (str)
     ],
 "error" => [
-        "code" => error-code
-        "message" => error message
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+### UPDATE USER DATA
+Params:
+- userid (required),
+- password (put "" if no change)
+- email (put "" if no change)
+- firstname (put "" if no change)
+- lastname (put "" if no change)
+- city (put "" if no change)
+- country (put "" if no change)
+Result: array with following key
+- data is empty if update success
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
     ]
 ```
