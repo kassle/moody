@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
 
-use Loncat\Moody\AppImpl;
-use PHPUnit\Framework\TestCase;
+require_once "include/MoodleRestMock.php";
 
-class AppImplTest extends TestCase {
+use Loncat\Moody\AppImpl;
+
+class AppImplGetUserTest extends MoodleRestMock {
     public function testGetUserByIdShouldCallMoodleRestWithCorrectFunctionAndParameters() {
         $response = $this->createUserResponse();
         $id = $response["id"];
@@ -120,61 +121,5 @@ class AppImplTest extends TestCase {
             ->willReturn($result);
 
         return $rest;
-    }
-
-    // public function testUpdateUserShouldReturnSuccess() {
-    //     $rest = $this->createMoodleRestMock();
-    //     $rest->expect()
-    // }
-
-    public function testUpdateUserShouldReturnError400WhenException() {
-        $rest = $this->createMoodleRestMockForRequestThatThrowException();
-        
-        $app = new AppImpl($rest);
-        $result = $app->updateUser("any", "", "", "", "", "", "us");
-
-        $this->assertEquals(0, sizeof($result["data"]));
-        $this->assertEquals(400, $result["error"]["code"]);
-    }
-
-    public function testUpdateUserShouldReturnError400WhenNoDataChanged() {
-        $rest = $this->createMoodleRestMock();
-        
-        $app = new AppImpl($rest);
-        $result = $app->updateUser("any", "", "", "", "", "", "");
-
-        $this->assertEquals(0, sizeof($result["data"]));
-        $this->assertEquals(400, $result["error"]["code"]);
-    }
-
-    public function testUpdateUserShouldReturnError500WhenResponseError() {
-        $response = array(
-            "errorcode" => "exception",
-            "message" => "access denied"
-        );
-        $rest = $this->createMoodleRestMock();
-        $rest->expects($this->once())
-            ->method("request")
-            ->willReturn($response);
-        
-        $app = new AppImpl($rest);
-        $result = $app->updateUser("any", "secret", "", "", "", "", "us");
-
-        $this->assertEquals(0, sizeof($result["data"]));
-        $this->assertEquals(500, $result["error"]["code"]);
-        $this->assertEquals($response["message"], $result["error"]["message"]);
-    }
-
-    private function createMoodleRestMockForRequestThatThrowException() {
-        $rest = $this->createMoodleRestMock();
-        $rest->expects($this->once())
-            ->method("request")
-            ->will($this->throwException(new Exception()));
-
-        return $rest;
-    }
-
-    private function createMoodleRestMock() : MoodleRest {
-        return $this->createMock(MoodleRest::class);
     }
 }
