@@ -300,7 +300,7 @@ class AppImpl implements App {
                             "roleid" => $data["roles"][0]["roleid"]);
                         $index++;
                     }
-                    return $output;
+                    return array("data" => $output, "error" => []);
                 }
             } else {
                 return array(
