@@ -199,11 +199,11 @@ class AppImpl implements App {
         }
 
         if ($startDate->getTimestamp() > 0) {
-            $changes["startdate"] = $startDate;
+            $changes["startdate"] = $startDate->getTimestamp();
         }
 
         if ($endDate->getTimestamp() > 0) {
-            $changes["enddate"] = $endDate;
+            $changes["enddate"] = $endDate->getTimestamp();
         }
 
         try {
