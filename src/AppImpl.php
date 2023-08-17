@@ -13,6 +13,47 @@ class AppImpl implements App {
         $this->rest = $rest;
     }
 
+    public function createUser(string $username, string $password, string $email, string $firstname, string $lastname, string $city, string $country) : array {
+        try {
+            $result = $this->rest->request("core_user_create_users",
+                array("users" => array(array(
+                    "createpassword" => 0,
+                    "username" => $username,
+                    "password" => $password,
+                    "email" => $email,
+                    "firstname" => $firstname,
+                    "lastname" => $lastname,
+                    "city" => $city,
+                    "country" => $country
+
+                ))), MoodleRest::METHOD_POST);
+
+            if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 500,
+                        "message" => $result["message"]
+                    ]);
+            } else {
+                return array(
+                    "data" => [
+                        "code" => 200,
+                        "userid" => strval($result[0]["id"]),
+                        "message" => "create success"
+                    ],
+                    "error" => []);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
+    }
+
     public function getUserById(string $id): array {
         return $this->getUserByField("id", $id);
     }
@@ -125,6 +166,37 @@ class AppImpl implements App {
                         "code" => 400,
                         "message" => "no field is changed, check params"
                     ]);
+            }
+        } catch (Throwable $error) {
+            return array(
+                "data" => [],
+                "error" => [
+                    "code" => 400,
+                    "message" => $error->getMessage()
+                ]);
+        }
+    }
+
+    public function deleteUser(string $id) : array {
+        try {
+            $result = $this->rest->request("core_user_delete_users",
+                array("userids" => array($id)),
+                MoodleRest::METHOD_POST);
+            
+            if (is_array($result) && sizeof($result) > 0 && array_key_exists("errorcode", $result)) {
+                return array(
+                    "data" => [],
+                    "error" => [
+                        "code" => 500,
+                        "message" => $result["message"]
+                    ]);
+            } else {
+                return array(
+                    "data" => [
+                        "code" => 200,
+                        "message" => "delete success"
+                    ],
+                    "error" => []);
             }
         } catch (Throwable $error) {
             return array(

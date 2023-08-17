@@ -5,10 +5,13 @@ namespace Loncat\Moody;
 use DateTime;
 
 interface App {
+    public function createUser(string $username, string $password, string $email, string $firstname, string $lastname, string $city, string $country) : array;
     public function getUserById(string $id) : array;
     public function getUserByUsername(string $username) : array;
     public function getUserByEmail(string $email) : array;
     public function updateUser(string $id, string $password, string $email, string $firstname, string $lastname, string $city, string $country) : array;
+    public function deleteUser(string $id) : array;
+
 
     public function createCourse(string $shortname, string $fullname, int $categoryId, string $summary, DateTime $startDate, DateTime $endDate) : array;
     public function updateCourse(string $courseId, string $shortname, string $fullname, int $categoryId, string $summary, DateTime $startDate, DateTime $endDate) : array;

@@ -45,12 +45,51 @@ Need to create token in Moodle Site Administration and the following function:
 - core_course_delete_courses
 - core_course_update_courses
 - core_enrol_get_enrolled_users
+- core_user_create_users
+- core_user_delete_users
 - core_user_get_users_by_field
 - core_user_update_users
 - enrol_manual_enrol_users
 - enrol_manual_unenrol_users
 
 ## API
+### CREATE USER
+Param:
+- username (string)
+- password (string, must be combination of Uppercase, Lowercase, Number, and maybe symbol, check Moodle requirement)
+- email (string)
+- firstname (string)
+- lastname (string)
+- city (string)
+- country (string)
+
+Result: array with following key
+- data is not empty if create success include the created **userid**
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "userid" => user-id (str),
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+```php
+$result = $app->createUser(
+    "batman",
+    "Batman123**",
+    "batman@gotham.com",
+    "batman",
+    "knight",
+    "gotham",
+    "id");
+```
+
 ### GET USER BY USERID/USERNAME/EMAIL
 Params: String of userId or username or email address
 
@@ -109,15 +148,37 @@ Result: array with following key
 $result = $app->updateUser("1234", "", "", "", "", "gotham-city", "dc");
 ```
 
+### CREATE USER
+Param:
+- userid (string)
+
+Result: array with following key
+- data is not empty if create success
+- error is not empty when there is an error
+
+```
+"data" => [
+        "code" => 200,
+        "message" => "success"
+    ],
+"error" => [
+        "code" => error-code (int)
+        "message" => error message (str)
+    ]
+```
+
+```php
+$result = $app->deleteUser("1234");
+```
+
 ### CREATE COURSE
 Param:
-- courseid (required)
-- shortname (put "" if no change)
-- fullname (put "" if no change)
-- categoryId (put -1 if no change)
-- summary (put "" if no change)
-- startDate (put `new DateTime(date(DATE_RFC2822, 0))` if no change)
-- endDate (put `new DateTime(date(DATE_RFC2822, 0))` if no change)
+- shortname (string)
+- fullname (string)
+- categoryId (int)
+- summary (string)
+- startDate (DateTime)
+- endDate (DateTime)
 
 Result: array with following key
 - data is not empty if create success include the created **courseid**
