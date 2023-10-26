@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <TITLE>Moodle Authentication</TITLE>
+    </HEAD>
+    <BODY>
+        <!--
+            How to authenticate to moodle from external
+            1. disable login token, there is two method
+                a. Using alternate login URL (Administration -> Site Administration -> Plugins -> Authentication -> Manage Authentication)
+                   https://docs.moodle.org/402/en/Managing_authentication#Alternate_login_URL
+                b. Disable login token
+                   https://docs.moodle.org/dev/Login_token#Switching_the_login_token_protection_off
+            2. Create HTML page to do authentication
+            3. Send API call to moodle-host/login/index.php with:
+                method = "post"
+                content type = "application/x-www-form-urlencoded"
+                body = "username={put-user-name}&password={put-password}"
+            
+            Below is simple implementation for the API call using HTML form
+        -->
+        <form action="{replace-with-moodle-hostname}/login/index.php" method="post">
+            <input hidden type="text" id="username" name="username" value="{put-username-here}">
+            <input hidden type="password" id="password" name="password" value="{put-password-here}">
+            <input type="submit" value="Access To Moodle">
+        </form>
+    </BODY>
+</HTML>
